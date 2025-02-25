@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db  # Persistent storage for your MongoDB database
+    deploy:
+      resources:
+        limits:
+          memory: 4g          # Allocate 4GB of memory for MongoDB
+          cpus: "2"           # Limit MongoDB to use 2 CPUs
+        reservations:
+          memory: 2g          # Reserve 2GB of memory for MongoDB to ensure availability
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
