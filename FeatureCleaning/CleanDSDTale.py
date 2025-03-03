@@ -298,29 +298,201 @@ def process_description_field(descriptions):
     return emb_df
 
 
-def process_repo(jira_name, db, sample_ratio):
+# def process_repo(jira_name, db, sample_ratio, max_records=3000, batch_size=500):
+#     """
+#     Process a single Jira repository using batch processing to prevent connection timeouts:
+#       - Load issues from MongoDB in batches.
+#       - Apply sampling only after all batches are collected.
+#       - Handle large datasets more efficiently with memory considerations.
+#       - Apply the same processing pipeline as before.
+#     """
+#     print(f"\nProcessing repository: {jira_name} ...")
+    
+#     # Get total count first (fast operation)
+#     total_issues = db[jira_name].count_documents({})
+#     if total_issues == 0:
+#         print(f"⚠️ No documents found for '{jira_name}', skipping.")
+#         return None
+    
+#     print(f"Found {total_issues} total issues in '{jira_name}'. Processing in batches of {batch_size}...")
+    
+#     # --- 1) Calculate sample size ---
+#     desired_sample_size = min(max(1, int(total_issues * sample_ratio)), max_records or float('inf'))
+    
+#     # --- 2) Determine if we need to sample during fetching or after ---
+#     if desired_sample_size < total_issues / 10:
+#         # If we want a small sample, use random skip to efficiently get samples
+#         # This avoids loading all documents when we only need a small fraction
+#         sample_indices = sorted(random.sample(range(total_issues), desired_sample_size))
+#         sampled_issues = []
+        
+#         # Fetch documents by their indices using skip/limit
+#         for idx in sample_indices:
+#             doc = db[jira_name].find().skip(idx).limit(1)
+#             sampled_issues.extend(list(doc))
+#     else:
+#         # For larger samples, process in batches
+#         sampled_issues = []
+#         cursor = db[jira_name].find()
+        
+#         # Process in batches to avoid loading everything at once
+#         batch_count = 0
+#         while True:
+#             batch = list(cursor.limit(batch_size).skip(batch_count * batch_size))
+#             if not batch:
+#                 break
+                
+#             batch_count += 1
+#             print(f"  - Processed batch {batch_count} ({len(batch)} issues)")
+#             sampled_issues.extend(batch)
+            
+#         # Apply sampling after all batches are collected
+#         if len(sampled_issues) > desired_sample_size:
+#             print(f"  - Sampling {desired_sample_size} issues from {len(sampled_issues)} collected issues")
+#             sampled_issues = random.sample(sampled_issues, desired_sample_size)
+    
+#     print(f"Final sample for '{jira_name}': {len(sampled_issues)} issues (out of {total_issues} total).")
+    
+#     # --- 3) Process the sample as before ---
+#     if not sampled_issues:
+#         return None
+        
+#     # Convert to DataFrame and apply the pipeline
+#     df_main = pd.json_normalize(sampled_issues, sep='.')
+#     df_main = fix_data_types(df_main)
+    
+#     # Process changelog histories in batches too
+#     df_histories = extract_and_flatten_histories_batched(sampled_issues, batch_size=100)
+    
+#     if not df_histories.empty:
+#         changelog_summary = summarize_changelog_histories(df_histories)
+#         if "key" not in df_main.columns:
+#             df_main["key"] = df_main["id"]
+#         df_main = pd.merge(df_main, changelog_summary, how="left", left_on="key", right_on="issue_key")
+#         df_main.drop(columns=["issue_key"], inplace=True, errors='ignore')
+    
+#     return df_main
+
+def process_repo(jira_name, db, sample_ratio, batch_size=500):
     """
-    Process a single Jira repository:
-      - Load issues from MongoDB.
-      - Sample a fraction of issues.
-      - Flatten main issue data and apply type conversion.
-      - Extract and flatten changelog histories, then summarize them (without from/to transitions).
-      - Merge the changelog summary with the main DataFrame.
+    Process a single Jira repository using batch processing to prevent connection timeouts.
+    Uses a fixed maximum of 500 records per repository and queries only necessary fields.
+    
+    Parameters:
+        jira_name (str): Name of the Jira repository
+        db: MongoDB database connection
+        sample_ratio (float): Original sample ratio parameter (kept for compatibility)
+        batch_size (int): Size of batches for processing
+    
+    Returns:
+        pd.DataFrame: Processed dataframe with sampled issues
     """
     print(f"\nProcessing repository: {jira_name} ...")
-    issues = list(db[jira_name].find())
-    if not issues:
+    
+    # Get total count first (fast operation)
+    total_issues = db[jira_name].count_documents({})
+    if total_issues == 0:
         print(f"⚠️ No documents found for '{jira_name}', skipping.")
         return None
     
-    total_count = len(issues)
-    sample_size = min(max(1, int(total_count * sample_ratio)), 35000)
-    sampled_issues = random.sample(issues, sample_size)
+    # Define only the fields we actually need
+    needed_fields = {
+        # Essential identification fields
+        "_id": 1,
+        "id": 1,
+        "key": 1,
+        "changelog": 1,  # Needed for changelog histories
+        
+        # Issue metadata
+        "fields.summary": 1,
+        "fields.description": 1,
+        "fields.created": 1,
+        "fields.updated": 1,
+        "fields.resolutiondate": 1,
+        
+        # Classification fields
+        "fields.issuetype.name": 1,
+        "fields.priority.name": 1,
+        "fields.status.name": 1,
+        
+        # People fields
+        "fields.assignee.key": 1,
+        "fields.assignee.name": 1,
+        "fields.reporter.key": 1, 
+        "fields.reporter.name": 1,
+        "fields.creator.key": 1,
+        "fields.creator.name": 1,
+        
+        # Project context
+        "fields.project.id": 1,
+        "fields.project.key": 1, 
+        "fields.project.name": 1,
+        
+        # Relationships
+        "fields.issuelinks": 1,
+        "fields.customfield_10557": 1,  # Sprint field
+        
+        # Components and labels
+        "fields.components": 1,
+        "fields.labels": 1,
+        "fields.fixVersions": 1,
+        
+        # Comments
+        "fields.comments": 1
+    }
     
+    print(f"Found {total_issues} total issues in '{jira_name}'. Processing in batches of {batch_size}...")
+    
+    # --- 1) Calculate sample size with fixed maximum ---
+    MAX_RECORDS = 100  # Fixed maximum number of records
+    desired_sample_size = min(MAX_RECORDS, total_issues)
+    print(f"Using fixed maximum of {MAX_RECORDS} records. Will retrieve {desired_sample_size} issues.")
+    
+    # --- 2) Determine if we need to sample during fetching or after ---
+    if desired_sample_size < total_issues / 10:
+        # If we want a small sample, use random skip to efficiently get samples
+        # This avoids loading all documents when we only need a small fraction
+        sample_indices = sorted(random.sample(range(total_issues), desired_sample_size))
+        sampled_issues = []
+        
+        # Fetch documents by their indices using skip/limit, but only retrieve needed fields
+        for idx in sample_indices:
+            doc = db[jira_name].find({}, needed_fields).skip(idx).limit(1)
+            sampled_issues.extend(list(doc))
+    else:
+        # For larger samples, process in batches
+        sampled_issues = []
+        cursor = db[jira_name].find({}, needed_fields)  # Only retrieve needed fields
+        
+        # Process in batches to avoid loading everything at once
+        batch_count = 0
+        while True:
+            batch = list(cursor.limit(batch_size).skip(batch_count * batch_size))
+            if not batch:
+                break
+                
+            batch_count += 1
+            print(f"  - Processed batch {batch_count} ({len(batch)} issues)")
+            sampled_issues.extend(batch)
+            
+        # Apply sampling after all batches are collected
+        if len(sampled_issues) > desired_sample_size:
+            print(f"  - Sampling {desired_sample_size} issues from {len(sampled_issues)} collected issues")
+            sampled_issues = random.sample(sampled_issues, desired_sample_size)
+    
+    print(f"Final sample for '{jira_name}': {len(sampled_issues)} issues (out of {total_issues} total).")
+    
+    # --- 3) Process the sample as before ---
+    if not sampled_issues:
+        return None
+        
+    # Convert to DataFrame and apply the pipeline
     df_main = pd.json_normalize(sampled_issues, sep='.')
     df_main = fix_data_types(df_main)
     
-    df_histories = extract_and_flatten_histories(sampled_issues)
+    # Process changelog histories in batches too
+    df_histories = extract_and_flatten_histories_batched(sampled_issues, batch_size=100)
+    
     if not df_histories.empty:
         changelog_summary = summarize_changelog_histories(df_histories)
         if "key" not in df_main.columns:
@@ -328,8 +500,33 @@ def process_repo(jira_name, db, sample_ratio):
         df_main = pd.merge(df_main, changelog_summary, how="left", left_on="key", right_on="issue_key")
         df_main.drop(columns=["issue_key"], inplace=True, errors='ignore')
     
+    # Add repository name for traceability
+    df_main['repository'] = jira_name
+    
     return df_main
 
+def extract_and_flatten_histories_batched(issues, batch_size=100):
+    """
+    Extract and flatten changelog histories from a list of issues using batched parallel processing.
+    """
+    flattened_histories = []
+    
+    # Process in batches
+    for i in range(0, len(issues), batch_size):
+        batch = issues[i:i+batch_size]
+        print(f"  - Processing changelog history batch {i//batch_size + 1}/{(len(issues)-1)//batch_size + 1}")
+        
+        # Process each batch in parallel
+        with ThreadPoolExecutor() as executor:
+            futures = {executor.submit(process_issue_histories, issue): issue for issue in batch}
+            for future in as_completed(futures):
+                result = future.result()
+                if result is not None and not result.empty:
+                    flattened_histories.append(result)
+    
+    if flattened_histories:
+        return pd.concat(flattened_histories, ignore_index=True)
+    return pd.DataFrame()
 
 def drop_high_missing_columns(df, threshold=0.3):
     """
@@ -438,10 +635,10 @@ def explore_all_fields_in_dtale(selected_jiras=None, sample_ratio=0.2, missing_t
         comments_df = pd.json_normalize(comments_features)
         final_df = pd.concat([final_df.drop(columns=["fields.comments"]), comments_df], axis=1)
 
-    # Process the 'fields.description' field to generate dense embeddings
-    if "fields.description" in final_df.columns:
-        desc_embeddings = process_description_field(final_df["fields.description"])
-        final_df = pd.concat([final_df.drop(columns=["fields.description"]), desc_embeddings], axis=1)
+    # # Process the 'fields.description' field to generate dense embeddings
+    # if "fields.description" in final_df.columns:
+    #     desc_embeddings = process_description_field(final_df["fields.description"])
+    #     final_df = pd.concat([final_df.drop(columns=["fields.description"]), desc_embeddings], axis=1)
 
     # Impute missing values
     final_df = impute_missing_values(final_df)
@@ -475,7 +672,7 @@ def export_clean_df():
         pd.DataFrame: The final processed DataFrame ready for training.
     """
     final_df = explore_all_fields_in_dtale(
-        selected_jiras=["Hyperledger", "SecondLife"],
+        selected_jiras=["MongoDB"],
         sample_ratio=0.01,
         missing_threshold=0.3,
         zero_threshold=0.8,
