@@ -312,7 +312,9 @@ def process_repo(jira_name, db, sample_ratio):
     if not issues:
         print(f"⚠️ No documents found for '{jira_name}', skipping.")
         return None
-    sample_size = max(1, int(len(issues) * sample_ratio))
+    
+    total_count = len(issues)
+    sample_size = min(max(1, int(total_count * sample_ratio)), 35000)
     sampled_issues = random.sample(issues, sample_size)
     
     df_main = pd.json_normalize(sampled_issues, sep='.')
