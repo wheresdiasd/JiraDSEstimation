@@ -1,30 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# ### Import Libraries
-
-# In[2]:
-
-
-# Database & File IO
 from pymongo import MongoClient
 import json5 as json
-
-# Standard Data Manipulation
-from collections import defaultdict
 import pandas as pd
 import numpy as np
 pd.set_option('display.max_colwidth', None)  # We want to see all data
 from statistics import mean, median
-
-# Tracking Time
 from time import time
-
-
-# ### Load Data Sources
-
-# In[ ]:
-
+import json
+import dtale
+import random
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from sklearn.impute import SimpleImputer
+from sentence_transformers import SentenceTransformer
 
 # Connect to the database
 client = MongoClient("mongodb://admin:password@localhost:27017/")
@@ -42,51 +28,14 @@ with open('../0. DataDefinition/jira_issuetype_information.json') as f:
 with open('../0. DataDefinition/jira_issuelinktype_information.json') as f:
     jira_issuelinktype_information = json.load(f)
 
-# Load the Jira Thematic Analysis JSON
-# with open('./jira_issuetype_thematic_analysis.json') as f:
-#     issuetype_themes_codes = json.load(f)
-
-
-# ### Define Helpful Globals
-
-# In[4]:
-
 
 ALL_JIRAS = [jira_name for jira_name in jira_data_sources.keys()]
 
-
-# ### Define Data Structures
-
-# In[5]:
-
-
-# These are the global dataframes that we will perform our analysis on.
 df_jiras = pd.DataFrame(
     np.nan,
     columns=['Born', 'Issues', 'DIT', 'UIT', 'Links', 'DLT', 'ULT', 'Changes', 'Ch/I', 'UP', 'Comments', 'Co/I'],
     index=ALL_JIRAS + ['Sum', 'Median', 'Std Dev']
 )
-
-
-# ### Query Data for Stats
-
-# 
-
-# In[1]:
-
-
-import json
-import dtale
-import pandas as pd
-import random
-import numpy as np
-from pymongo import MongoClient
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from sklearn.impute import SimpleImputer
-from sentence_transformers import SentenceTransformer
-
-# Load the Sentence Transformer model (you can choose a smaller one if needed)
-desc_model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def parse_date_str(x):
     """
@@ -219,23 +168,6 @@ def summarize_changelog_histories(df_histories):
     summary = summary.rename(columns=lambda x: f'changelog_count_{x}' if x != 'issue_key' else x)
     return summary
 
-
-def drop_zero_dominated_columns(df, prefix='changelog_count_', zero_threshold=0.8):
-    """
-    Drop numeric columns with names starting with `prefix` if more than `zero_threshold`
-    fraction of their values are zeros.
-    """
-    cols_to_drop = []
-    for col in df.columns:
-        if col.startswith(prefix) and df[col].dtype.kind in 'biufc':
-            frac_zeros = (df[col] == 0).mean()
-            if frac_zeros > zero_threshold:
-                cols_to_drop.append(col)
-    if cols_to_drop:
-        df = df.drop(columns=cols_to_drop)
-    return df
-
-
 def process_issue_links(issuelinks):
     """
     Process the 'fields.issuelinks' JSON array and extract features:
@@ -297,14 +229,19 @@ def process_description_field(descriptions):
                           columns=[f"desc_emb_{i}" for i in range(emb_array.shape[1])])
     return emb_df
 
-
-# def process_repo(jira_name, db, sample_ratio, max_records=3000, batch_size=500):
+# def process_repo(jira_name, db, sample_ratio, batch_size=500):
 #     """
-#     Process a single Jira repository using batch processing to prevent connection timeouts:
-#       - Load issues from MongoDB in batches.
-#       - Apply sampling only after all batches are collected.
-#       - Handle large datasets more efficiently with memory considerations.
-#       - Apply the same processing pipeline as before.
+#     Process a single Jira repository using batch processing to prevent connection timeouts.
+#     Uses a fixed maximum of 500 records per repository and queries only necessary fields.
+    
+#     Parameters:
+#         jira_name (str): Name of the Jira repository
+#         db: MongoDB database connection
+#         sample_ratio (float): Original sample ratio parameter (kept for compatibility)
+#         batch_size (int): Size of batches for processing
+    
+#     Returns:
+#         pd.DataFrame: Processed dataframe with sampled issues
 #     """
 #     print(f"\nProcessing repository: {jira_name} ...")
     
@@ -314,10 +251,58 @@ def process_description_field(descriptions):
 #         print(f"⚠️ No documents found for '{jira_name}', skipping.")
 #         return None
     
+#     # Define only the fields we actually need
+#     needed_fields = {
+#         # Essential identification fields
+#         "_id": 1,
+#         "id": 1,
+#         "key": 1,
+#         "changelog": 1,  # Needed for changelog histories
+        
+#         # Issue metadata
+#         "fields.summary": 1,
+#         "fields.description": 1,
+#         "fields.created": 1,
+#         "fields.updated": 1,
+#         "fields.resolutiondate": 1,
+        
+#         # Classification fields
+#         "fields.issuetype.name": 1,
+#         "fields.priority.name": 1,
+#         "fields.status.name": 1,
+        
+#         # People fields
+#         "fields.assignee.key": 1,
+#         "fields.assignee.name": 1,
+#         "fields.reporter.key": 1, 
+#         "fields.reporter.name": 1,
+#         "fields.creator.key": 1,
+#         "fields.creator.name": 1,
+        
+#         # Project context
+#         "fields.project.id": 1,
+#         "fields.project.key": 1, 
+#         "fields.project.name": 1,
+        
+#         # Relationships
+#         "fields.issuelinks": 1,
+#         "fields.customfield_10557": 1,  # Sprint field
+        
+#         # Components and labels
+#         "fields.components": 1,
+#         "fields.labels": 1,
+#         "fields.fixVersions": 1,
+        
+#         # Comments
+#         "fields.comments": 1
+#     }
+    
 #     print(f"Found {total_issues} total issues in '{jira_name}'. Processing in batches of {batch_size}...")
     
-#     # --- 1) Calculate sample size ---
-#     desired_sample_size = min(max(1, int(total_issues * sample_ratio)), max_records or float('inf'))
+#     # --- 1) Calculate sample size with fixed maximum ---
+#     MAX_RECORDS = 500  # Fixed maximum number of records
+#     desired_sample_size = min(MAX_RECORDS, total_issues)
+#     print(f"Using fixed maximum of {MAX_RECORDS} records. Will retrieve {desired_sample_size} issues.")
     
 #     # --- 2) Determine if we need to sample during fetching or after ---
 #     if desired_sample_size < total_issues / 10:
@@ -326,14 +311,14 @@ def process_description_field(descriptions):
 #         sample_indices = sorted(random.sample(range(total_issues), desired_sample_size))
 #         sampled_issues = []
         
-#         # Fetch documents by their indices using skip/limit
+#         # Fetch documents by their indices using skip/limit, but only retrieve needed fields
 #         for idx in sample_indices:
-#             doc = db[jira_name].find().skip(idx).limit(1)
+#             doc = db[jira_name].find({}, needed_fields).skip(idx).limit(1)
 #             sampled_issues.extend(list(doc))
 #     else:
 #         # For larger samples, process in batches
 #         sampled_issues = []
-#         cursor = db[jira_name].find()
+#         cursor = db[jira_name].find({}, needed_fields)  # Only retrieve needed fields
         
 #         # Process in batches to avoid loading everything at once
 #         batch_count = 0
@@ -361,28 +346,239 @@ def process_description_field(descriptions):
 #     df_main = pd.json_normalize(sampled_issues, sep='.')
 #     df_main = fix_data_types(df_main)
     
-#     # Process changelog histories in batches too
-#     df_histories = extract_and_flatten_histories_batched(sampled_issues, batch_size=100)
-    
-#     if not df_histories.empty:
-#         changelog_summary = summarize_changelog_histories(df_histories)
-#         if "key" not in df_main.columns:
-#             df_main["key"] = df_main["id"]
-#         df_main = pd.merge(df_main, changelog_summary, how="left", left_on="key", right_on="issue_key")
-#         df_main.drop(columns=["issue_key"], inplace=True, errors='ignore')
+#     # Add repository name for traceability
+#     df_main['repository'] = jira_name
     
 #     return df_main
 
-def process_repo(jira_name, db, sample_ratio, batch_size=500):
+# def process_repo(jira_name, db, sample_ratio, batch_size=500, target_cap=900):
+#     """
+#     Process a single Jira repository using project-based sampling.
+#     Samples complete projects to reach approximately target_cap total records.
+    
+#     Parameters:
+#         jira_name (str): Name of the Jira repository
+#         db: MongoDB database connection
+#         sample_ratio (float): Used to influence project selection (higher means more projects)
+#         batch_size (int): Size of batches for processing
+#         target_cap (int): Target number of total issues to sample across projects
+    
+#     Returns:
+#         pd.DataFrame: Processed dataframe with sampled issues
+#     """
+#     print(f"\nProcessing repository: {jira_name} ...")
+    
+#     # Get total count first (fast operation)
+#     total_issues = db[jira_name].count_documents({})
+#     if total_issues == 0:
+#         print(f"⚠️ No documents found for '{jira_name}', skipping.")
+#         return None
+    
+#     # Define only the fields we actually need
+#     needed_fields = {
+#         # Essential identification fields
+#         "_id": 1,
+#         "id": 1,
+#         "key": 1,
+#         "changelog": 1,  # Needed for changelog histories
+        
+#         # Issue metadata
+#         "fields.summary": 1,
+#         "fields.description": 1,
+#         "fields.created": 1,
+#         "fields.updated": 1,
+#         "fields.resolutiondate": 1,
+        
+#         # Classification fields
+#         "fields.issuetype.name": 1,
+#         "fields.priority.name": 1,
+#         "fields.status.name": 1,
+        
+#         # People fields
+#         "fields.assignee.key": 1,
+#         "fields.assignee.name": 1,
+#         "fields.reporter.key": 1, 
+#         "fields.reporter.name": 1,
+#         "fields.creator.key": 1,
+#         "fields.creator.name": 1,
+        
+#         # Project context
+#         "fields.project.id": 1,
+#         "fields.project.key": 1, 
+#         "fields.project.name": 1,
+        
+#         # Relationships
+#         "fields.issuelinks": 1,
+#         "fields.customfield_10557": 1,  # Sprint field
+        
+#         # Components and labels
+#         "fields.components": 1,
+#         "fields.labels": 1,
+#         "fields.fixVersions": 1,
+        
+#         # Comments
+#         "fields.comments": 1
+#     }
+    
+#     print(f"Found {total_issues} total issues in '{jira_name}'. Analyzing projects...")
+    
+#     # --- 1) Get project distribution ---
+#     # Get count of issues by project.id
+#     project_counts = list(db[jira_name].aggregate([
+#         {"$group": {"_id": "$fields.project.id", 
+#                    "count": {"$sum": 1},
+#                    "name": {"$first": "$fields.project.name"}}}
+#     ]))
+    
+#     # Convert to list of dictionaries with project details
+#     projects = [{"id": p["_id"], "count": p["count"], "name": p.get("name", "Unknown")} 
+#                for p in project_counts if p["_id"] is not None]
+    
+#     print(f"Found {len(projects)} projects in repository.")
+    
+#     # --- 2) Select projects based on size categories ---
+#     # Adjust target cap based on sample_ratio if needed
+#     adjusted_target = min(target_cap, int(total_issues * sample_ratio))
+    
+#     # Group projects by size
+#     small_projects = [p for p in projects if p["count"] < adjusted_target * 0.2]
+#     medium_projects = [p for p in projects if adjusted_target * 0.2 <= p["count"] < adjusted_target * 0.6]
+#     large_projects = [p for p in projects if p["count"] >= adjusted_target * 0.6]
+    
+#     print(f"Project distribution: {len(small_projects)} small, {len(medium_projects)} medium, {len(large_projects)} large")
+    
+#     # Initialize selection
+#     selected_projects = []
+#     total_selected_issues = 0
+    
+#     # Helper function to find best fit project
+#     def find_best_fit(project_list, remaining_capacity, prefer_larger=True):
+#         if not project_list:
+#             return None
+        
+#         # Sort by size (descending if prefer_larger, ascending otherwise)
+#         sorted_projects = sorted(project_list, key=lambda p: p["count"], reverse=prefer_larger)
+        
+#         # Find first project that fits
+#         for project in sorted_projects:
+#             # Allow slight overage (up to 20%)
+#             if project["count"] <= remaining_capacity * 1.2:
+#                 return project
+        
+#         # If nothing fits within constraints, take smallest
+#         if not prefer_larger:
+#             return sorted_projects[0]  # smallest
+#         return None
+    
+#     # Try to select a diverse mix of projects
+    
+#     # First try to get a large project if it fits reasonably
+#     if large_projects:
+#         best_large = find_best_fit(large_projects, adjusted_target, prefer_larger=True)
+#         if best_large and best_large["count"] <= adjusted_target * 1.3:  # Allow 30% overage for large projects
+#             selected_projects.append(best_large)
+#             total_selected_issues += best_large["count"]
+#             large_projects.remove(best_large)
+#             print(f"Selected large project: {best_large['name']} with {best_large['count']} issues")
+    
+#     # Then add some medium projects
+#     while medium_projects and total_selected_issues < adjusted_target * 0.7:
+#         remaining = adjusted_target - total_selected_issues
+#         best_medium = find_best_fit(medium_projects, remaining, prefer_larger=False)
+#         if best_medium:
+#             selected_projects.append(best_medium)
+#             total_selected_issues += best_medium["count"]
+#             medium_projects.remove(best_medium)
+#             print(f"Selected medium project: {best_medium['name']} with {best_medium['count']} issues")
+#         else:
+#             break
+    
+#     # Finally fill in with small projects
+#     while small_projects and total_selected_issues < adjusted_target * 0.9:
+#         remaining = adjusted_target - total_selected_issues
+#         best_small = find_best_fit(small_projects, remaining, prefer_larger=True)
+#         if best_small:
+#             selected_projects.append(best_small)
+#             total_selected_issues += best_small["count"]
+#             small_projects.remove(best_small)
+#             print(f"Selected small project: {best_small['name']} with {best_small['count']} issues")
+#         else:
+#             break
+    
+#     # If we're still significantly under target, add one more project that best fits
+#     if total_selected_issues < adjusted_target * 0.8:
+#         remaining = adjusted_target - total_selected_issues
+#         remaining_projects = small_projects + medium_projects + large_projects
+#         best_remaining = find_best_fit(remaining_projects, remaining * 1.3, prefer_larger=False)
+#         if best_remaining:
+#             selected_projects.append(best_remaining)
+#             total_selected_issues += best_remaining["count"]
+#             print(f"Added additional project: {best_remaining['name']} with {best_remaining['count']} issues")
+    
+#     # --- 3) Fetch issues from selected projects ---
+#     if not selected_projects:
+#         print("No projects could be selected. Using default sampling method.")
+#         # Fall back to the original sampling method
+#         desired_sample_size = min(500, total_issues)
+#         sample_indices = sorted(random.sample(range(total_issues), desired_sample_size))
+#         sampled_issues = []
+        
+#         for idx in sample_indices:
+#             doc = db[jira_name].find({}, needed_fields).skip(idx).limit(1)
+#             sampled_issues.extend(list(doc))
+#     else:
+#         # Get all issues from selected projects
+#         project_ids = [p["id"] for p in selected_projects]
+#         sampled_issues = []
+        
+#         # Process each project
+#         for project_id in project_ids:
+#             # Get count for this project
+#             project_issue_count = next((p["count"] for p in selected_projects if p["id"] == project_id), 0)
+            
+#             # Fetch in batches
+#             print(f"Fetching {project_issue_count} issues for project ID {project_id}...")
+#             cursor = db[jira_name].find({"fields.project.id": project_id}, needed_fields)
+            
+#             batch_count = 0
+#             fetched_count = 0
+            
+#             while fetched_count < project_issue_count:
+#                 batch = list(cursor.limit(batch_size).skip(batch_count * batch_size))
+#                 if not batch:
+#                     break
+                
+#                 batch_count += 1
+#                 fetched_count += len(batch)
+#                 print(f"  - Fetched batch {batch_count} ({len(batch)} issues, {fetched_count}/{project_issue_count})")
+#                 sampled_issues.extend(batch)
+    
+#     print(f"Final sample for '{jira_name}': {len(sampled_issues)} issues from {len(selected_projects)} projects")
+    
+#     # --- 4) Process the sample as before ---
+#     if not sampled_issues:
+#         return None
+        
+#     # Convert to DataFrame and apply the pipeline
+#     df_main = pd.json_normalize(sampled_issues, sep='.')
+#     df_main = fix_data_types(df_main)
+    
+#     # Add repository name for traceability
+#     df_main['repository'] = jira_name
+    
+#     return df_main
+
+def process_repo(jira_name, db, sample_ratio, batch_size=300, target_cap=90000):
     """
-    Process a single Jira repository using batch processing to prevent connection timeouts.
-    Uses a fixed maximum of 500 records per repository and queries only necessary fields.
+    Process a single Jira repository using project-based sampling.
+    Samples complete projects to reach approximately target_cap total records.
     
     Parameters:
         jira_name (str): Name of the Jira repository
         db: MongoDB database connection
-        sample_ratio (float): Original sample ratio parameter (kept for compatibility)
+        sample_ratio (float): Used to influence project selection (higher means more projects)
         batch_size (int): Size of batches for processing
+        target_cap (int): Target number of total issues to sample across projects
     
     Returns:
         pd.DataFrame: Processed dataframe with sampled issues
@@ -441,48 +637,148 @@ def process_repo(jira_name, db, sample_ratio, batch_size=500):
         "fields.comments": 1
     }
     
-    print(f"Found {total_issues} total issues in '{jira_name}'. Processing in batches of {batch_size}...")
+    print(f"Found {total_issues} total issues in '{jira_name}'. Analyzing projects...")
     
-    # --- 1) Calculate sample size with fixed maximum ---
-    MAX_RECORDS = 100  # Fixed maximum number of records
-    desired_sample_size = min(MAX_RECORDS, total_issues)
-    print(f"Using fixed maximum of {MAX_RECORDS} records. Will retrieve {desired_sample_size} issues.")
+    # --- 1) Get project distribution ---
+    # Get count of issues by project.id
+    project_counts = list(db[jira_name].aggregate([
+        {"$group": {"_id": "$fields.project.id", 
+                   "count": {"$sum": 1},
+                   "name": {"$first": "$fields.project.name"}}}
+    ]))
     
-    # --- 2) Determine if we need to sample during fetching or after ---
-    if desired_sample_size < total_issues / 10:
-        # If we want a small sample, use random skip to efficiently get samples
-        # This avoids loading all documents when we only need a small fraction
+    # Convert to list of dictionaries with project details
+    projects = [{"id": p["_id"], "count": p["count"], "name": p.get("name", "Unknown")} 
+               for p in project_counts if p["_id"] is not None]
+    
+    print(f"Found {len(projects)} projects in repository.")
+    
+    # --- 2) Select projects based on size categories ---
+    # Adjust target cap based on sample_ratio if needed
+    adjusted_target = min(target_cap, int(total_issues * sample_ratio))
+    
+    # Group projects by size
+    small_projects = [p for p in projects if p["count"] < adjusted_target * 0.2]
+    medium_projects = [p for p in projects if adjusted_target * 0.2 <= p["count"] < adjusted_target * 0.6]
+    large_projects = [p for p in projects if p["count"] >= adjusted_target * 0.6]
+    
+    print(f"Project distribution: {len(small_projects)} small, {len(medium_projects)} medium, {len(large_projects)} large")
+    
+    # Initialize selection
+    selected_projects = []
+    total_selected_issues = 0
+    
+    # Helper function to find best fit project
+    def find_best_fit(project_list, remaining_capacity, prefer_larger=True):
+        if not project_list:
+            return None
+        
+        # Sort by size (descending if prefer_larger, ascending otherwise)
+        sorted_projects = sorted(project_list, key=lambda p: p["count"], reverse=prefer_larger)
+        
+        # Find first project that fits
+        for project in sorted_projects:
+            # Allow slight overage (up to 20%)
+            if project["count"] <= remaining_capacity * 1.2:
+                return project
+        
+        # If nothing fits within constraints, take smallest
+        if not prefer_larger:
+            return sorted_projects[0]  # smallest
+        return None
+    
+    # Try to select a diverse mix of projects
+    
+    # First try to get a large project if it fits reasonably
+    if large_projects:
+        best_large = find_best_fit(large_projects, adjusted_target, prefer_larger=True)
+        if best_large and best_large["count"] <= adjusted_target * 1.3:  # Allow 30% overage for large projects
+            selected_projects.append(best_large)
+            total_selected_issues += best_large["count"]
+            large_projects.remove(best_large)
+            print(f"Selected large project: {best_large['name']} with {best_large['count']} issues")
+    
+    # Then add some medium projects
+    while medium_projects and total_selected_issues < adjusted_target * 0.7:
+        remaining = adjusted_target - total_selected_issues
+        best_medium = find_best_fit(medium_projects, remaining, prefer_larger=False)
+        if best_medium:
+            selected_projects.append(best_medium)
+            total_selected_issues += best_medium["count"]
+            medium_projects.remove(best_medium)
+            print(f"Selected medium project: {best_medium['name']} with {best_medium['count']} issues")
+        else:
+            break
+    
+    # Finally fill in with small projects
+    while small_projects and total_selected_issues < adjusted_target * 0.9:
+        remaining = adjusted_target - total_selected_issues
+        best_small = find_best_fit(small_projects, remaining, prefer_larger=True)
+        if best_small:
+            selected_projects.append(best_small)
+            total_selected_issues += best_small["count"]
+            small_projects.remove(best_small)
+            print(f"Selected small project: {best_small['name']} with {best_small['count']} issues")
+        else:
+            break
+    
+    # If we're still significantly under target, add one more project that best fits
+    if total_selected_issues < adjusted_target * 0.8:
+        remaining = adjusted_target - total_selected_issues
+        remaining_projects = small_projects + medium_projects + large_projects
+        best_remaining = find_best_fit(remaining_projects, remaining * 1.3, prefer_larger=False)
+        if best_remaining:
+            selected_projects.append(best_remaining)
+            total_selected_issues += best_remaining["count"]
+            print(f"Added additional project: {best_remaining['name']} with {best_remaining['count']} issues")
+    
+    # --- 3) Fetch issues from selected projects ---
+    if not selected_projects:
+        print("No projects could be selected. Using default sampling method.")
+        # Fall back to the original sampling method
+        desired_sample_size = min(500, total_issues)
         sample_indices = sorted(random.sample(range(total_issues), desired_sample_size))
         sampled_issues = []
         
-        # Fetch documents by their indices using skip/limit, but only retrieve needed fields
         for idx in sample_indices:
             doc = db[jira_name].find({}, needed_fields).skip(idx).limit(1)
             sampled_issues.extend(list(doc))
     else:
-        # For larger samples, process in batches
+        # Get all issues from selected projects
+        project_ids = [p["id"] for p in selected_projects]
         sampled_issues = []
-        cursor = db[jira_name].find({}, needed_fields)  # Only retrieve needed fields
         
-        # Process in batches to avoid loading everything at once
-        batch_count = 0
-        while True:
-            batch = list(cursor.limit(batch_size).skip(batch_count * batch_size))
-            if not batch:
-                break
-                
-            batch_count += 1
-            print(f"  - Processed batch {batch_count} ({len(batch)} issues)")
-            sampled_issues.extend(batch)
+        # Process each project
+        for project_id in project_ids:
+            # Get count for this project
+            project_issue_count = next((p["count"] for p in selected_projects if p["id"] == project_id), 0)
             
-        # Apply sampling after all batches are collected
-        if len(sampled_issues) > desired_sample_size:
-            print(f"  - Sampling {desired_sample_size} issues from {len(sampled_issues)} collected issues")
-            sampled_issues = random.sample(sampled_issues, desired_sample_size)
+            # Fetch in batches
+            print(f"Fetching {project_issue_count} issues for project ID {project_id}...")
+            
+            # Fixed: Create a new cursor for each batch instead of reusing the same cursor
+            batch_count = 0
+            fetched_count = 0
+            
+            while fetched_count < project_issue_count:
+                # Create a fresh cursor for each batch with the appropriate skip and limit
+                cursor = db[jira_name].find(
+                    {"fields.project.id": project_id}, 
+                    needed_fields
+                ).skip(batch_count * batch_size).limit(batch_size)
+                
+                batch = list(cursor)
+                if not batch:
+                    break
+                
+                batch_count += 1
+                fetched_count += len(batch)
+                print(f"  - Fetched batch {batch_count} ({len(batch)} issues, {fetched_count}/{project_issue_count})")
+                sampled_issues.extend(batch)
     
-    print(f"Final sample for '{jira_name}': {len(sampled_issues)} issues (out of {total_issues} total).")
+    print(f"Final sample for '{jira_name}': {len(sampled_issues)} issues from {len(selected_projects)} projects")
     
-    # --- 3) Process the sample as before ---
+    # --- 4) Process the sample as before ---
     if not sampled_issues:
         return None
         
@@ -490,43 +786,10 @@ def process_repo(jira_name, db, sample_ratio, batch_size=500):
     df_main = pd.json_normalize(sampled_issues, sep='.')
     df_main = fix_data_types(df_main)
     
-    # Process changelog histories in batches too
-    df_histories = extract_and_flatten_histories_batched(sampled_issues, batch_size=100)
-    
-    if not df_histories.empty:
-        changelog_summary = summarize_changelog_histories(df_histories)
-        if "key" not in df_main.columns:
-            df_main["key"] = df_main["id"]
-        df_main = pd.merge(df_main, changelog_summary, how="left", left_on="key", right_on="issue_key")
-        df_main.drop(columns=["issue_key"], inplace=True, errors='ignore')
-    
     # Add repository name for traceability
     df_main['repository'] = jira_name
     
     return df_main
-
-def extract_and_flatten_histories_batched(issues, batch_size=100):
-    """
-    Extract and flatten changelog histories from a list of issues using batched parallel processing.
-    """
-    flattened_histories = []
-    
-    # Process in batches
-    for i in range(0, len(issues), batch_size):
-        batch = issues[i:i+batch_size]
-        print(f"  - Processing changelog history batch {i//batch_size + 1}/{(len(issues)-1)//batch_size + 1}")
-        
-        # Process each batch in parallel
-        with ThreadPoolExecutor() as executor:
-            futures = {executor.submit(process_issue_histories, issue): issue for issue in batch}
-            for future in as_completed(futures):
-                result = future.result()
-                if result is not None and not result.empty:
-                    flattened_histories.append(result)
-    
-    if flattened_histories:
-        return pd.concat(flattened_histories, ignore_index=True)
-    return pd.DataFrame()
 
 def drop_high_missing_columns(df, threshold=0.3):
     """
@@ -594,31 +857,6 @@ def explore_all_fields_in_dtale(selected_jiras=None, sample_ratio=0.2, missing_t
     else:
         print("No data to display.")
         return
-    
-
-    # Define columns to drop – these include system URLs, avatar URLs, raw MongoDB identifiers, etc.
-    cols_to_drop = [
-        "_id", "expand",
-        # System URLs and redundant identifiers
-        "self",
-        # FixVersions and versions (if not used for estimation)
-        "fields.fixVersions", "fields.versions",
-        # Avatar URLs and similar, since they are user-specific noise
-        "fields.assignee.avatarUrls.48x48", "fields.assignee.avatarUrls.24x24",
-        "fields.assignee.avatarUrls.16x16", "fields.assignee.avatarUrls.32x32",
-        "fields.reporter.avatarUrls.48x48", "fields.reporter.avatarUrls.24x24",
-        "fields.reporter.avatarUrls.16x16", "fields.reporter.avatarUrls.32x32",
-        "fields.creator.avatarUrls.48x48", "fields.creator.avatarUrls.24x24",
-        "fields.creator.avatarUrls.16x16", "fields.creator.avatarUrls.32x32",
-        # Some of the raw MongoDB fields
-        "changelog.startAt", "changelog.maxResults", "changelog.total",
-        # Votes and similar rarely useful fields
-        "fields.votes.self", "fields.votes.hasVoted"
-    ]
-
-    # Only drop columns that exist in the DataFrame.
-    existing_cols = [col for col in cols_to_drop if col in final_df.columns]
-    final_df = final_df.drop(columns=existing_cols, errors='ignore')
 
     # Drop columns with high missing ratios
     final_df = drop_high_missing_columns(final_df, threshold=missing_threshold)
@@ -629,11 +867,6 @@ def explore_all_fields_in_dtale(selected_jiras=None, sample_ratio=0.2, missing_t
         issuelinks_df = pd.json_normalize(issuelinks_features)
         final_df = pd.concat([final_df.drop(columns=["fields.issuelinks"]), issuelinks_df], axis=1)
 
-    # Process JSON array field for comments
-    if "fields.comments" in final_df.columns:
-        comments_features = final_df["fields.comments"].apply(process_comments)
-        comments_df = pd.json_normalize(comments_features)
-        final_df = pd.concat([final_df.drop(columns=["fields.comments"]), comments_df], axis=1)
 
     # # Process the 'fields.description' field to generate dense embeddings
     # if "fields.description" in final_df.columns:
@@ -642,9 +875,6 @@ def explore_all_fields_in_dtale(selected_jiras=None, sample_ratio=0.2, missing_t
 
     # Impute missing values
     final_df = impute_missing_values(final_df)
-
-    # Drop changelog summary columns dominated by zeros
-    final_df = drop_zero_dominated_columns(final_df, prefix='changelog_count_', zero_threshold=zero_threshold)
 
     date_cols = ["fields.created", "fields.updated", "fields.resolutiondate"]
 
@@ -672,8 +902,8 @@ def export_clean_df():
         pd.DataFrame: The final processed DataFrame ready for training.
     """
     final_df = explore_all_fields_in_dtale(
-        selected_jiras=["MongoDB"],
-        sample_ratio=0.01,
+        selected_jiras=["Hyperledger", "MongoDB", "Sonartype", "JiraEcosystem", "Mojang"],
+        sample_ratio=1,
         missing_threshold=0.3,
         zero_threshold=0.8,
         open_dtale=True
