@@ -903,7 +903,7 @@ def export_clean_df():
     """
     final_df = explore_all_fields_in_dtale(
         selected_jiras=["Hyperledger", "MongoDB", "Sonartype", "JiraEcosystem", "Mojang"],
-        sample_ratio=1,
+        sample_ratio=0.7,
         missing_threshold=0.3,
         zero_threshold=0.8,
         open_dtale=True
