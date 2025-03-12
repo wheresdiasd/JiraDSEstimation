@@ -1,0 +1,139 @@
+{
+  "Large High-effort Projects (Cluster 0)": {
+    "size": 2,
+    "percentage": 0.6,
+    "sample_projects": [
+      "Minecraft (Bedrock codebase)",
+      "Minecraft: Java Edition"
+    ],
+    "description": "Projects where team_size_estimate is 7912.8% higher than average, reporter_count is 7912.4% higher than average, reporter.key is 7912.4% higher than average, issuetype.name_Bug is 5466.2% higher than average, issue_count is 3282.5% higher than average",
+    "features": {
+      "issuetype.name_Suggestion": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "pct_diff": -100.0
+      },
+      "issue_count": {
+        "mean": 172932.0,
+        "median": 172932.0,
+        "min": 140317.0,
+        "max": 205547.0,
+        "pct_diff": 3282.463813520043
+      },
+      "issuetype.name_Bug": {
+        "mean": 172932.0,
+        "median": 172932.0,
+        "min": 140317.0,
+        "max": 205547.0,
+        "pct_diff": 5466.227418111256
+      },
+      "reporter_count": {
+        "mean": 101179.5,
+        "median": 101179.5,
+        "min": 83862.0,
+        "max": 118497.0,
+        "pct_diff": 7912.408443609432
+      },
+      "reporter.key": {
+        "mean": 101179.5,
+        "median": 101179.5,
+        "min": 83862.0,
+        "max": 118497.0,
+        "pct_diff": 7912.408443609432
+      },
+      "issuetype.name_Support Request": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "pct_diff": -100.0
+      },
+      "team_size_estimate": {
+        "mean": 101247.0,
+        "median": 101247.0,
+        "min": 83872.0,
+        "max": 118622.0,
+        "pct_diff": 7912.844741962257
+      },
+      "avg_resolution_hours": {
+        "mean": 1729.1418023754313,
+        "median": 1729.1418023754313,
+        "min": 1264.1251082572087,
+        "max": 2194.1584964936537,
+        "pct_diff": -63.82056884384496
+      }
+    }
+  },
+  "Medium High-effort Projects (Cluster 1)": {
+    "size": 347,
+    "percentage": 99.4,
+    "sample_projects": [
+      "Cayenne",
+      "Apache ServiceComb",
+      "Atlas",
+      "IronJacamar",
+      "Tuscany"
+    ],
+    "description": "Projects where team_size_estimate is 45.6% lower than average, reporter_count is 45.6% lower than average, reporter.key is 45.6% lower than average, issuetype.name_Bug is 31.5% lower than average, issue_count is 18.9% lower than average",
+    "features": {
+      "issuetype.name_Suggestion": {
+        "mean": 272.38904899135446,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 18693.0,
+        "pct_diff": 0.5763688760806837
+      },
+      "issue_count": {
+        "mean": 4145.345821325648,
+        "median": 2069.0,
+        "min": 47.0,
+        "max": 52972.0,
+        "pct_diff": -18.919099789740898
+      },
+      "issuetype.name_Bug": {
+        "mean": 2127.988472622478,
+        "median": 1020.0,
+        "min": 0.0,
+        "max": 27546.0,
+        "pct_diff": -31.50563353378246
+      },
+      "reporter_count": {
+        "mean": 686.8962536023055,
+        "median": 216.0,
+        "min": 1.0,
+        "max": 15180.0,
+        "pct_diff": -45.604659617345426
+      },
+      "reporter.key": {
+        "mean": 686.8962536023055,
+        "median": 216.0,
+        "min": 1.0,
+        "max": 15180.0,
+        "pct_diff": -45.604659617345426
+      },
+      "issuetype.name_Support Request": {
+        "mean": 7.051873198847262,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 1467.0,
+        "pct_diff": 0.576368876080686
+      },
+      "team_size_estimate": {
+        "mean": 687.2853025936599,
+        "median": 216.0,
+        "min": 1.0,
+        "max": 15187.0,
+        "pct_diff": -45.60717430525797
+      },
+      "avg_resolution_hours": {
+        "mean": 4796.93089386616,
+        "median": 3362.299036922165,
+        "min": 58.33640838206627,
+        "max": 44768.758100080544,
+        "pct_diff": 0.3678418953535757
+      }
+    }
+  }
+}
