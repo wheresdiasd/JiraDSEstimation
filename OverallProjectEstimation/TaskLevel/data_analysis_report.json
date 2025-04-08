@@ -1,0 +1,622 @@
+{
+  "file_info": {
+    "file_path": "./TaskLevel/consolidated_task_data_filtered.csv",
+    "file_size_gb": 3.201947339810431,
+    "total_columns": 45
+  },
+  "columns": {
+    "_id": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 100000,
+      "sample_values": [
+        "61d4783ff4d395ee22055ccc",
+        "61d414b6f4d395ee22ff7d6e",
+        "61d4783ff4d395ee220559d9"
+      ]
+    },
+    "id": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 94982,
+      "sample_values": [
+        724226,
+        20886,
+        62443
+      ]
+    },
+    "key": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 99983,
+      "sample_values": [
+        "FABN-372",
+        "JAVA-2430",
+        "TOOLS-2667"
+      ]
+    },
+    "fields.issuetype.id": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 27,
+      "sample_values": [
+        1,
+        10002,
+        4
+      ]
+    },
+    "fields.issuetype.name": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 21,
+      "sample_values": [
+        "Improvement",
+        "Bug",
+        "Epic"
+      ]
+    },
+    "fields.project.id": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 50,
+      "sample_values": [
+        10902,
+        12787,
+        10002
+      ]
+    },
+    "fields.project.key": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 52,
+      "sample_values": [
+        "MCOL",
+        "NODE",
+        "MDEV"
+      ]
+    },
+    "fields.project.name": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 52,
+      "sample_values": [
+        "Java Driver",
+        "Evergreen",
+        "Python Driver"
+      ]
+    },
+    "fields.resolutiondate": {
+      "dtype": "text",
+      "missing_count": 15656,
+      "missing_percentage": 15.656,
+      "unique_values": 79324,
+      "sample_values": [
+        "2015-08-27 14:27:51+00:00",
+        "2021-07-27 13:17:50+00:00",
+        "2021-10-27 10:54:12+00:00"
+      ]
+    },
+    "fields.created": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 97929,
+      "sample_values": [
+        "2018-10-01 14:29:06+00:00",
+        "2014-04-17 21:01:14+00:00",
+        "2020-04-13 05:54:41+00:00"
+      ]
+    },
+    "fields.priority.name": {
+      "dtype": "categorical",
+      "missing_count": 2132,
+      "missing_percentage": 2.1319999999999997,
+      "unique_values": 16,
+      "sample_values": [
+        "Major",
+        "Minor - P4",
+        "Major - P3"
+      ]
+    },
+    "fields.priority.id": {
+      "dtype": "float64",
+      "missing_count": 2132,
+      "missing_percentage": 2.1319999999999997,
+      "unique_values": 6,
+      "sample_values": [
+        10300.0,
+        3.0,
+        4.0
+      ]
+    },
+    "fields.issuelinks": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 35022,
+      "sample_values": [
+        "[]",
+        "[]",
+        "[{'id': '964318', 'self': 'https://jira.mongodb.org/rest/api/2/issueLink/964318', 'type': {'id': '10011', 'name': 'Depends', 'inward': 'is depended on by', 'outward': 'depends on', 'self': 'https://jira.mongodb.org/rest/api/2/issueLinkType/10011'}, 'inwardIssue': {'id': '1634040', 'key': 'EVG-14159', 'self': 'https://jira.mongodb.org/rest/api/2/issue/1634040', 'fields': {'summary': 'Enable test results in all projects.', 'status': {'self': 'https://jira.mongodb.org/rest/api/2/status/6', 'description': 'The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.', 'iconUrl': 'https://jira.mongodb.org/images/icons/statuses/closed.png', 'name': 'Closed', 'id': '6', 'statusCategory': {'self': 'https://jira.mongodb.org/rest/api/2/statuscategory/3', 'id': 3, 'key': 'done', 'colorName': 'green', 'name': 'Done'}}, 'priority': {'self': 'https://jira.mongodb.org/rest/api/2/priority/3', 'iconUrl': 'https://jira.mongodb.org/images/icons/priorities/major.svg', 'name': 'Major - P3', 'id': '3'}, 'issuetype': {'self': 'https://jira.mongodb.org/rest/api/2/issuetype/3', 'id': '3', 'description': 'A task that needs to be done.', 'iconUrl': 'https://jira.mongodb.org/secure/viewavatar?size=xsmall&avatarId=14718&avatarType=issuetype', 'name': 'Task', 'subtask': False, 'avatarId': 14718}}}}, {'id': '983358', 'self': 'https://jira.mongodb.org/rest/api/2/issueLink/983358', 'type': {'id': '10010', 'name': 'Duplicate', 'inward': 'is duplicated by', 'outward': 'duplicates', 'self': 'https://jira.mongodb.org/rest/api/2/issueLinkType/10010'}, 'inwardIssue': {'id': '1673673', 'key': 'EVG-14425', 'self': 'https://jira.mongodb.org/rest/api/2/issue/1673673', 'fields': {'summary': 'Investigate issue appending buildlogger lines', 'status': {'self': 'https://jira.mongodb.org/rest/api/2/status/6', 'description': 'The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.', 'iconUrl': 'https://jira.mongodb.org/images/icons/statuses/closed.png', 'name': 'Closed', 'id': '6', 'statusCategory': {'self': 'https://jira.mongodb.org/rest/api/2/statuscategory/3', 'id': 3, 'key': 'done', 'colorName': 'green', 'name': 'Done'}}, 'priority': {'self': 'https://jira.mongodb.org/rest/api/2/priority/3', 'iconUrl': 'https://jira.mongodb.org/images/icons/priorities/major.svg', 'name': 'Major - P3', 'id': '3'}, 'issuetype': {'self': 'https://jira.mongodb.org/rest/api/2/issuetype/1', 'id': '1', 'description': 'A problem which impairs or prevents the functions of the product.', 'iconUrl': 'https://jira.mongodb.org/secure/viewavatar?size=xsmall&avatarId=14703&avatarType=issuetype', 'name': 'Bug', 'subtask': False, 'avatarId': 14703}}}}]"
+      ]
+    },
+    "fields.updated": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 79512,
+      "sample_values": [
+        "2019-03-29 21:04:23+00:00",
+        "2021-10-28 17:58:57+00:00",
+        "2019-03-29 20:32:30+00:00"
+      ]
+    },
+    "fields.status.name": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 40,
+      "sample_values": [
+        "Closed",
+        "Complete",
+        "Closed"
+      ]
+    },
+    "fields.creator.self": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 10337,
+      "sample_values": [
+        "https://jira.mariadb.org/rest/api/2/user?username=mleich",
+        "https://jira.mariadb.org/rest/api/2/user?username=KB_Heinze",
+        "https://jira.hyperledger.org/rest/api/2/user?username=madelinemurray"
+      ]
+    },
+    "fields.creator.name": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 10300,
+      "sample_values": [
+        "esa.korhonen",
+        "btl5037",
+        "odowdaibm"
+      ]
+    },
+    "fields.creator.key": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 10295,
+      "sample_values": [
+        "luckychess",
+        "westernsam",
+        "denyeart"
+      ]
+    },
+    "fields.creator.avatarUrls.48x48": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 2636,
+      "sample_values": [
+        "https://jira.mongodb.org/secure/useravatar?avatarId=10122",
+        "https://jira.hyperledger.org/secure/useravatar?ownerId=hightall&avatarId=11205",
+        "https://jira.mongodb.org/secure/useravatar?avatarId=10122"
+      ]
+    },
+    "fields.creator.avatarUrls.24x24": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 2636,
+      "sample_values": [
+        "https://jira.mariadb.org/secure/useravatar?size=small&avatarId=10122",
+        "https://jira.mongodb.org/secure/useravatar?size=small&ownerId=eric.daniels%4010gen.com&avatarId=25729",
+        "https://jira.mariadb.org/secure/useravatar?size=small&ownerId=JIRAUSER41505&avatarId=22300"
+      ]
+    },
+    "fields.creator.avatarUrls.16x16": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 2636,
+      "sample_values": [
+        "https://jira.hyperledger.org/secure/useravatar?size=xsmall&ownerId=andkononykhin&avatarId=11121",
+        "https://www.gravatar.com/avatar/076fe81b1b4b9a7dbd65c064ca235d79?d=mm&s=16",
+        "https://jira.mongodb.org/secure/useravatar?size=xsmall&avatarId=17815"
+      ]
+    },
+    "fields.creator.avatarUrls.32x32": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 2636,
+      "sample_values": [
+        "https://jira.mongodb.org/secure/useravatar?size=medium&avatarId=10122",
+        "https://jira.hyperledger.org/secure/useravatar?size=medium&avatarId=10346",
+        "https://jira.mongodb.org/secure/useravatar?size=medium&ownerId=david.golden&avatarId=13601"
+      ]
+    },
+    "fields.creator.displayName": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 10007,
+      "sample_values": [
+        "Christian Amor Kvalheim",
+        "Alex Bevilacqua",
+        "Alex Cameron"
+      ]
+    },
+    "fields.creator.active": {
+      "dtype": "categorical",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 6,
+      "sample_values": [
+        true,
+        1.0,
+        true
+      ]
+    },
+    "fields.creator.timeZone": {
+      "dtype": "text",
+      "missing_count": 134,
+      "missing_percentage": 0.134,
+      "unique_values": 153,
+      "sample_values": [
+        "UTC",
+        "Etc/UTC",
+        "Etc/UTC"
+      ]
+    },
+    "repository": {
+      "dtype": "categorical",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 3,
+      "sample_values": [
+        "MongoDB",
+        "MongoDB",
+        "MariaDB"
+      ]
+    },
+    "priority_name": {
+      "dtype": "categorical",
+      "missing_count": 2132,
+      "missing_percentage": 2.1319999999999997,
+      "unique_values": 16,
+      "sample_values": [
+        "Medium",
+        "Major - P3",
+        "Major"
+      ]
+    },
+    "priority_id": {
+      "dtype": "float64",
+      "missing_count": 2132,
+      "missing_percentage": 2.1319999999999997,
+      "unique_values": 6,
+      "sample_values": [
+        3.0,
+        3.0,
+        3.0
+      ]
+    },
+    "issue_type": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 21,
+      "sample_values": [
+        "Task",
+        "Task",
+        "Improvement"
+      ]
+    },
+    "issue_type_id": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 27,
+      "sample_values": [
+        3,
+        4,
+        2
+      ]
+    },
+    "status": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 40,
+      "sample_values": [
+        "Closed",
+        "Closed",
+        "Closed"
+      ]
+    },
+    "is_completed": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 2,
+      "sample_values": [
+        1,
+        1,
+        1
+      ]
+    },
+    "type_task": {
+      "dtype": "float64",
+      "missing_count": 37,
+      "missing_percentage": 0.037,
+      "unique_values": 2,
+      "sample_values": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "type_bug": {
+      "dtype": "float64",
+      "missing_count": 87,
+      "missing_percentage": 0.087,
+      "unique_values": 2,
+      "sample_values": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    "inward_count": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 48,
+      "sample_values": [
+        0,
+        0,
+        0
+      ]
+    },
+    "outward_count": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 42,
+      "sample_values": [
+        0,
+        0,
+        0
+      ]
+    },
+    "is_resolved": {
+      "dtype": "int64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 2,
+      "sample_values": [
+        1,
+        0,
+        1
+      ]
+    },
+    "resolution_time_days": {
+      "dtype": "float64",
+      "missing_count": 15656,
+      "missing_percentage": 15.656,
+      "unique_values": 80720,
+      "sample_values": [
+        36.71597222222222,
+        2.6616435185185185,
+        0.4002083333333333
+      ]
+    },
+    "age_days": {
+      "dtype": "float64",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 98110,
+      "sample_values": [
+        2828.86303980463,
+        2054.3878304203354,
+        2909.554959584965
+      ]
+    },
+    "source_file": {
+      "dtype": "text",
+      "missing_count": 0,
+      "missing_percentage": 0.0,
+      "unique_values": 52,
+      "sample_values": [
+        "11901_MariaDB_Foundation_Development.csv",
+        "10000_MariaDB_Server.csv",
+        "10002_Fabric.csv"
+      ]
+    },
+    "type_sub_task": {
+      "dtype": "float64",
+      "missing_count": 24264,
+      "missing_percentage": 24.264,
+      "unique_values": 2,
+      "sample_values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "fields.timespent": {
+      "dtype": "float64",
+      "missing_count": 99848,
+      "missing_percentage": 99.848,
+      "unique_values": 58,
+      "sample_values": [
+        57600.0,
+        115200.0,
+        10800.0
+      ]
+    },
+    "fields.timeestimate": {
+      "dtype": "float64",
+      "missing_count": 99039,
+      "missing_percentage": 99.039,
+      "unique_values": 57,
+      "sample_values": [
+        28800.0,
+        57600.0,
+        3600.0
+      ]
+    },
+    "fields.timeoriginalestimate": {
+      "dtype": "float64",
+      "missing_count": 99108,
+      "missing_percentage": 99.10799999999999,
+      "unique_values": 49,
+      "sample_values": [
+        3600.0,
+        14400.0,
+        144000.0
+      ]
+    },
+    "fields.creator": {
+      "dtype": "float64",
+      "missing_count": 100000,
+      "missing_percentage": 100.0,
+      "unique_values": 0,
+      "sample_values": []
+    }
+  },
+  "column_categories": {
+    "id_key": 10,
+    "issue_type": 2,
+    "priority": 4,
+    "status": 2,
+    "temporal": 4,
+    "time_tracking": 3,
+    "links": 1,
+    "project": 3,
+    "people": 11,
+    "other": 11
+  },
+  "datetime_columns": [
+    "fields.resolutiondate",
+    "fields.created",
+    "fields.updated"
+  ],
+  "numeric_columns": [
+    "id",
+    "fields.issuetype.id",
+    "fields.project.id",
+    "fields.priority.id",
+    "priority_id",
+    "issue_type_id",
+    "is_completed",
+    "type_task",
+    "type_bug",
+    "inward_count",
+    "outward_count",
+    "is_resolved",
+    "resolution_time_days",
+    "age_days",
+    "type_sub_task",
+    "fields.timespent",
+    "fields.timeestimate",
+    "fields.timeoriginalestimate",
+    "fields.creator"
+  ],
+  "categorical_columns": [
+    "fields.priority.name",
+    "fields.creator.active",
+    "repository",
+    "priority_name"
+  ],
+  "text_columns": [
+    "_id",
+    "key",
+    "fields.issuetype.name",
+    "fields.project.key",
+    "fields.project.name",
+    "fields.resolutiondate",
+    "fields.created",
+    "fields.issuelinks",
+    "fields.updated",
+    "fields.status.name",
+    "fields.creator.self",
+    "fields.creator.name",
+    "fields.creator.key",
+    "fields.creator.avatarUrls.48x48",
+    "fields.creator.avatarUrls.24x24",
+    "fields.creator.avatarUrls.16x16",
+    "fields.creator.avatarUrls.32x32",
+    "fields.creator.displayName",
+    "fields.creator.timeZone",
+    "issue_type",
+    "status",
+    "source_file"
+  ],
+  "missing_value_columns": [
+    {
+      "column": "fields.resolutiondate",
+      "missing_percentage": 15.656
+    },
+    {
+      "column": "resolution_time_days",
+      "missing_percentage": 15.656
+    },
+    {
+      "column": "type_sub_task",
+      "missing_percentage": 24.264
+    },
+    {
+      "column": "fields.timespent",
+      "missing_percentage": 99.848
+    },
+    {
+      "column": "fields.timeestimate",
+      "missing_percentage": 99.039
+    },
+    {
+      "column": "fields.timeoriginalestimate",
+      "missing_percentage": 99.10799999999999
+    },
+    {
+      "column": "fields.creator",
+      "missing_percentage": 100.0
+    }
+  ],
+  "timezone_issues": [],
+  "recommendations": {
+    "datetime_handling": [
+      "Extract temporal features like day of week, hour, month from datetime columns"
+    ],
+    "missing_values": [
+      "Consider dropping columns with >50% missing values: fields.timespent, fields.timeestimate, fields.timeoriginalestimate, fields.creator",
+      "Use grouped imputation (by issue type/priority) for columns with 20-50% missing"
+    ],
+    "feature_engineering": [
+      "Parse issue links to extract inward/outward link counts and dependency metrics",
+      "Create one-hot encodings for issue types",
+      "Create one-hot encodings for priority levels",
+      "Calculate effort hours from creation to resolution/update for completed tasks"
+    ],
+    "target_variable": [
+      "Use time between creation and resolution as target variable for effort estimation",
+      "Consider using logged time (fields.timespent) as alternative target variable if available"
+    ],
+    "general": [
+      "Apply log transformation to effort/time metrics to handle skewed distributions",
+      "Create separate models by issue type or project for more accurate predictions"
+    ]
+  }
+}
