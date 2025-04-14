@@ -1,3 +1,6 @@
+
+![Diego - EA - Page 1 (5)](https://github.com/user-attachments/assets/becd313c-fb49-49b2-a6aa-c673d6eccfe7)
+
 This project creates a series of datasets and ML Models as the following:
 
 
