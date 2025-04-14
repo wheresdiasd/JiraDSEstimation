@@ -1,4 +1,4 @@
-This project creates a series of datasets as the following:
+This project creates a series of datasets and ML Models as the following:
 
 
 ![Diego - EA - Page 1 (8)](https://github.com/user-attachments/assets/74fbbffc-38c3-4127-8e07-9260caa1375f)
