@@ -1,3 +1,13 @@
+
+![Diego - EA - Page 1 (5)](https://github.com/user-attachments/assets/becd313c-fb49-49b2-a6aa-c673d6eccfe7)
+
+This project creates a series of datasets and ML Models as the following:
+
+
+![Diego - EA - Page 1 (8)](https://github.com/user-attachments/assets/74fbbffc-38c3-4127-8e07-9260caa1375f)
+
+
+
 ## Summary of Artefacts
 
 Jira is an issue tracking system that supports software companies (among other types of companies) with managing their projects, community, and processes. This dataset is a collection of public Jira repositories downloaded from the internet using the Jira API V2. We collected data from 16 pubic Jira repositories containing 1822 projects and 2.7 million issues. Included in this data are historical records of 32 million changes, 9 million comments, and 1 million issue links that connect the issues in complex ways. This artefact repository contains the data as a MongoDB dump, the scripts used to download the data, the scripts used to interpret the data, and qualitative work conducted to make the data more approachable.
