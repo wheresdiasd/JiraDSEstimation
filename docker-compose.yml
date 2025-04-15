@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - mongo_data:/data/db  # Persistent storage for your MongoDB database
+      - mongo_data:/data/db  # Persistent storage for MongoDB database
     deploy:
       resources:
         limits:
