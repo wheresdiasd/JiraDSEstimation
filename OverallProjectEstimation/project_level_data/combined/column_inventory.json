@@ -1,31 +1,14 @@
 {
-  "total_unique_columns": 1504,
+  "total_unique_columns": 1473,
   "column_patterns": {
     "other": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creator_concentration",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
       "issue_creation_volatility",
       "issue_type_entropy",
       "link_density",
@@ -51,13 +34,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -1512,16 +1488,9 @@
       "type_workload_resolution_rate"
     ],
     "ratio_metrics": [
-      "bug_creation_ratio",
-      "bug_developer_ratio",
       "bug_ratio",
-      "core_team_ratio",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "high_to_low_priority_ratio",
-      "weekend_activity_ratio",
-      "weekly_efficiency_ratio",
-      "work_hour_creation_ratio"
+      "weekly_efficiency_ratio"
     ]
   },
   "repositories": {
@@ -1538,36 +1507,14 @@
   },
   "columns_by_repo": {
     "MariaDB": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "high_to_low_priority_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
@@ -1669,13 +1616,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -1710,42 +1650,18 @@
       "type_technical_task_count",
       "type_technical_task_pct",
       "type_technical_task_resolution_rate",
-      "weekend_activity_ratio",
       "weekly_efficiency_ratio",
-      "weighted_priority_score",
-      "work_hour_creation_ratio"
+      "weighted_priority_score"
     ],
     "Hyperledger": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
       "link_density",
@@ -1878,13 +1794,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -1919,41 +1828,17 @@
       "type_test_task_count",
       "type_test_task_pct",
       "type_test_task_resolution_rate",
-      "weekend_activity_ratio",
-      "weekly_efficiency_ratio",
-      "work_hour_creation_ratio"
+      "weekly_efficiency_ratio"
     ],
     "MongoDB": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "high_to_low_priority_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
@@ -2187,13 +2072,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -2281,42 +2159,18 @@
       "type_workload_count",
       "type_workload_pct",
       "type_workload_resolution_rate",
-      "weekend_activity_ratio",
       "weekly_efficiency_ratio",
-      "weighted_priority_score",
-      "work_hour_creation_ratio"
+      "weighted_priority_score"
     ],
     "Jira": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
       "link_density",
@@ -2409,13 +2263,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -2453,40 +2300,17 @@
       "type_task_count",
       "type_task_pct",
       "type_task_resolution_rate",
-      "weekend_activity_ratio",
-      "weekly_efficiency_ratio",
-      "work_hour_creation_ratio"
+      "weekly_efficiency_ratio"
     ],
     "Mojang": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_request_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
       "link_density",
@@ -2539,12 +2363,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -2553,42 +2371,18 @@
       "type_bug_count",
       "type_bug_pct",
       "type_bug_resolution_rate",
-      "weekend_activity_ratio",
       "weekly_efficiency_ratio",
-      "weighted_priority_score",
-      "work_hour_creation_ratio"
+      "weighted_priority_score"
     ],
     "RedHat": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "high_to_low_priority_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
@@ -3112,13 +2906,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -3280,42 +3067,18 @@
       "type_tracker_count",
       "type_tracker_pct",
       "type_tracker_resolution_rate",
-      "weekend_activity_ratio",
       "weekly_efficiency_ratio",
-      "weighted_priority_score",
-      "work_hour_creation_ratio"
+      "weighted_priority_score"
     ],
     "Apache": [
-      "avg_creator_experience_days",
-      "avg_creator_issue_count",
-      "avg_creator_specialization",
       "avg_inward_links",
-      "avg_issues_per_creator",
       "avg_issues_per_month",
-      "avg_new_creators_per_month",
       "avg_outward_links",
       "avg_resolution_hours",
       "avg_total_links",
-      "bug_creation_ratio",
-      "bug_creator_concentration",
-      "bug_developer_ratio",
       "bug_ratio",
-      "complex_issue_distribution",
       "complexity_weighted_resolution_time",
-      "core_team_ratio",
-      "creation_hour_entropy",
-      "creation_rate_stability",
       "creation_resolution_balance",
-      "creator_activity_std",
-      "creator_activity_variance",
-      "creator_diversity",
-      "creator_link_density_mean",
-      "creator_link_density_std",
-      "creator_onboarding_volatility",
-      "creator_resolution_time_variability",
-      "creator_workload_gini",
-      "feature_developer_ratio",
-      "feature_request_ratio",
       "high_to_low_priority_ratio",
       "issue_creation_volatility",
       "issue_type_entropy",
@@ -3813,13 +3576,6 @@
       "resolution_time_p75",
       "resolution_time_p90",
       "resolution_time_skewness",
-      "team_complexity_capacity",
-      "team_resolution_predictability",
-      "team_size_assignees",
-      "team_size_combined",
-      "team_size_creators",
-      "team_type_specialization_index",
-      "top_creator_contribution",
       "total_inward_links",
       "total_issues",
       "total_links",
@@ -3974,10 +3730,8 @@
       "type_wish_count",
       "type_wish_pct",
       "type_wish_resolution_rate",
-      "weekend_activity_ratio",
       "weekly_efficiency_ratio",
-      "weighted_priority_score",
-      "work_hour_creation_ratio"
+      "weighted_priority_score"
     ]
   },
   "repos_by_column": {
@@ -4589,283 +4343,6 @@
       "RedHat"
     ],
     "monthly_velocity": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_size_creators": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_size_assignees": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_size_combined": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "core_team_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_workload_gini": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_diversity": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "avg_issues_per_creator": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "top_creator_contribution": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_activity_variance": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_activity_std": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_type_specialization_index": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "MongoDB",
-      "RedHat"
-    ],
-    "bug_creation_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "feature_request_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "bug_creator_concentration": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "bug_developer_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "feature_developer_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "MongoDB",
-      "RedHat"
-    ],
-    "weekend_activity_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creation_rate_stability": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "avg_new_creators_per_month": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_onboarding_volatility": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_link_density_mean": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_link_density_std": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "complex_issue_distribution": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_complexity_capacity": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "work_hour_creation_ratio": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creation_hour_entropy": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "creator_resolution_time_variability": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "team_resolution_predictability": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "avg_creator_experience_days": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "avg_creator_issue_count": [
-      "Apache",
-      "Hyperledger",
-      "Jira",
-      "MariaDB",
-      "Mojang",
-      "MongoDB",
-      "RedHat"
-    ],
-    "avg_creator_specialization": [
       "Apache",
       "Hyperledger",
       "Jira",
@@ -9419,93 +8896,93 @@
     ]
   },
   "similar_columns": {
-    "type_new_tlp___common_tasks_count": [
-      "type_new_tlp_-_common_tasks_count",
-      "type_new_tlp___common_tasks_count"
+    "type_qe_sub_task_count": [
+      "type_qe_sub-task_count",
+      "type_qe_sub_task_count"
     ],
     "type_sub_task_pct": [
       "type_sub-task_pct",
       "type_sub_task_pct"
     ],
-    "type_backport_sub_task_count": [
-      "type_backport_sub-task_count",
-      "type_backport_sub_task_count"
-    ],
     "type_qe_sub_task_pct": [
-      "type_qe_sub_task_pct",
-      "type_qe_sub-task_pct"
+      "type_qe_sub-task_pct",
+      "type_qe_sub_task_pct"
     ],
-    "type_new_tlp___common_tasks_pct": [
-      "type_new_tlp_-_common_tasks_pct",
-      "type_new_tlp___common_tasks_pct"
+    "type_sub_task_count": [
+      "type_sub-task_count",
+      "type_sub_task_count"
+    ],
+    "type_docs_sub_task_count": [
+      "type_docs_sub-task_count",
+      "type_docs_sub_task_count"
+    ],
+    "type_blogs___new_blog_user_account_request_count": [
+      "type_blogs___new_blog_user_account_request_count",
+      "type_blogs_-_new_blog_user_account_request_count"
+    ],
+    "type_blog___new_blog_request_pct": [
+      "type_blog___new_blog_request_pct",
+      "type_blog_-_new_blog_request_pct"
     ],
     "type_blogs___access_to_existing_blog_count": [
       "type_blogs_-_access_to_existing_blog_count",
       "type_blogs___access_to_existing_blog_count"
     ],
-    "type_blogs___access_to_existing_blog_pct": [
-      "type_blogs___access_to_existing_blog_pct",
-      "type_blogs_-_access_to_existing_blog_pct"
+    "type_sub_requirement__pct": [
+      "type_sub_requirement__pct",
+      "type_sub-requirement__pct"
     ],
-    "type_qe_sub_task_count": [
-      "type_qe_sub-task_count",
-      "type_qe_sub_task_count"
+    "type_sub_requirement__count": [
+      "type_sub-requirement__count",
+      "type_sub_requirement__count"
     ],
-    "type_docs_sub_task_pct": [
-      "type_docs_sub-task_pct",
-      "type_docs_sub_task_pct"
+    "type_simple_sub_task_count": [
+      "type_simple_sub_task_count",
+      "type_simple_sub-task_count"
+    ],
+    "type_new_tlp___common_tasks_count": [
+      "type_new_tlp___common_tasks_count",
+      "type_new_tlp_-_common_tasks_count"
     ],
     "type_blogs___new_blog_user_account_request_pct": [
       "type_blogs_-_new_blog_user_account_request_pct",
       "type_blogs___new_blog_user_account_request_pct"
     ],
-    "type_sub_requirement__pct": [
-      "type_sub-requirement__pct",
-      "type_sub_requirement__pct"
-    ],
-    "type_sub_requirement__count": [
-      "type_sub_requirement__count",
-      "type_sub-requirement__count"
-    ],
-    "type_simple_sub_task_count": [
-      "type_simple_sub-task_count",
-      "type_simple_sub_task_count"
-    ],
-    "type_blog___new_blog_request_pct": [
-      "type_blog_-_new_blog_request_pct",
-      "type_blog___new_blog_request_pct"
-    ],
-    "type_backport_sub_task_pct": [
-      "type_backport_sub_task_pct",
-      "type_backport_sub-task_pct"
-    ],
-    "type_blogs___new_blog_user_account_request_count": [
-      "type_blogs_-_new_blog_user_account_request_count",
-      "type_blogs___new_blog_user_account_request_count"
-    ],
-    "type_simple_sub_task_pct": [
-      "type_simple_sub_task_pct",
-      "type_simple_sub-task_pct"
-    ],
-    "type_docs_sub_task_count": [
-      "type_docs_sub_task_count",
-      "type_docs_sub-task_count"
+    "type_new_tlp___common_tasks_pct": [
+      "type_new_tlp___common_tasks_pct",
+      "type_new_tlp_-_common_tasks_pct"
     ],
     "type_dev_sub_task_pct": [
-      "type_dev_sub-task_pct",
-      "type_dev_sub_task_pct"
+      "type_dev_sub_task_pct",
+      "type_dev_sub-task_pct"
+    ],
+    "type_backport_sub_task_count": [
+      "type_backport_sub-task_count",
+      "type_backport_sub_task_count"
     ],
     "type_blog___new_blog_request_count": [
       "type_blog_-_new_blog_request_count",
       "type_blog___new_blog_request_count"
     ],
     "type_dev_sub_task_count": [
-      "type_dev_sub_task_count",
-      "type_dev_sub-task_count"
+      "type_dev_sub-task_count",
+      "type_dev_sub_task_count"
     ],
-    "type_sub_task_count": [
-      "type_sub-task_count",
-      "type_sub_task_count"
+    "type_blogs___access_to_existing_blog_pct": [
+      "type_blogs_-_access_to_existing_blog_pct",
+      "type_blogs___access_to_existing_blog_pct"
+    ],
+    "type_simple_sub_task_pct": [
+      "type_simple_sub-task_pct",
+      "type_simple_sub_task_pct"
+    ],
+    "type_docs_sub_task_pct": [
+      "type_docs_sub_task_pct",
+      "type_docs_sub-task_pct"
+    ],
+    "type_backport_sub_task_pct": [
+      "type_backport_sub_task_pct",
+      "type_backport_sub-task_pct"
     ]
   }
 }

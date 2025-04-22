@@ -1,0 +1,37 @@
+=== MODEL COMPARISON SUMMARY ===
+
+Performance Metrics:
+                  Model     RMSE      MAE       R²  Spearman
+          Random Forest 2.140399 1.538568 0.452653  0.739185
+      Gradient Boosting 2.206024 1.590690 0.418575  0.708658
+                XGBoost 2.159560 1.623483 0.442809  0.737353
+    Tuned Random Forest 2.095636 1.513091 0.475307  0.750451
+Tuned Gradient Boosting 2.203918 1.572429 0.419684  0.725841
+          Tuned XGBoost 2.119604 1.515635 0.463237  0.745319
+
+Improvement from Hyperparameter Tuning (%):
+            Model     RMSE      MAE
+    Random Forest 2.091340 1.655915
+Gradient Boosting 0.095424 1.147985
+          XGBoost 1.850212 6.642992
+
+Best Overall Model: Tuned Random Forest
+  RMSE: 2.0956
+  MAE: 1.5131
+  R²: 0.4753
+  Spearman: 0.7505
+
+Best Parameters:
+  {'bootstrap': True, 'ccp_alpha': 0.0, 'criterion': 'squared_error', 'max_depth': None, 'max_features': 1.0, 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 2, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 200, 'n_jobs': None, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}
+
+Top 10 Features (by importance):
+  weighted_priority_score: 0.2552
+  issue_type_entropy: 0.1367
+  bug_ratio: 0.0983
+  priority_blocker_pct: 0.0862
+  type_task_pct: 0.0830
+  type_new_feature_pct: 0.0719
+  type_bug_pct: 0.0599
+  priority_critical_pct: 0.0525
+  high_to_low_priority_ratio: 0.0476
+  type_improvement_pct: 0.0311

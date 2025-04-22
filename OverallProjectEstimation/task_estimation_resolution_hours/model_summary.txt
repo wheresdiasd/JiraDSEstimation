@@ -1,0 +1,61 @@
+# Resolution Hours Ensemble Model with Hyperparameter Tuning
+
+## Performance Comparison
+
+| Model | Metric | Original | Tuned | Improvement (%) |
+|-------|--------|----------|-------|----------------|
+| Random_Forest | MAE | 4173.8301 | 3830.5476 | 8.22 |
+| Random_Forest | RMSE | 8178.4105 | 7814.2402 | 4.45 |
+| Random_Forest | R2 | 0.2212 | 0.2891 | 30.65 |
+| Random_Forest | Spearman | 0.2161 | 0.3206 | 48.36 |
+| Gradient_Boosting | MAE | 4042.1350 | 3846.4525 | 4.84 |
+| Gradient_Boosting | RMSE | 8048.2280 | 7800.0655 | 3.08 |
+| Gradient_Boosting | R2 | 0.2458 | 0.2916 | 18.63 |
+| Gradient_Boosting | Spearman | 0.2144 | 0.2762 | 28.83 |
+| XGBoost | MAE | 4046.6008 | 3894.6420 | 3.76 |
+| XGBoost | RMSE | 8055.8538 | 7849.2193 | 2.57 |
+| XGBoost | R2 | 0.2444 | 0.2827 | 15.66 |
+| XGBoost | Spearman | 0.2169 | 0.2724 | 25.58 |
+| Ensemble | MAE | 4077.5986 | 3836.6130 | 5.91 |
+| Ensemble | RMSE | 8074.7520 | 7780.5808 | 3.64 |
+| Ensemble | R2 | 0.2409 | 0.2952 | 22.55 |
+| Ensemble | Spearman | 0.2190 | 0.2952 | 34.80 |
+
+## Hyperparameter Changes
+
+### Random_Forest
+
+| Parameter | Original | Tuned |
+|-----------|----------|-------|
+| n_estimators | 100 | 200 |
+| min_samples_leaf | 5 | 5 |
+| max_features | sqrt | sqrt |
+| max_depth | 10 | None |
+
+### Gradient_Boosting
+
+| Parameter | Original | Tuned |
+|-----------|----------|-------|
+| subsample | 1.0 | 0.8 |
+| n_estimators | 100 | 200 |
+| min_samples_leaf | 5 | 3 |
+| max_depth | 5 | 7 |
+| learning_rate | 0.05 | 0.05 |
+
+### XGBoost
+
+| Parameter | Original | Tuned |
+|-----------|----------|-------|
+| subsample | 0.8 | 1.0 |
+| n_estimators | 100 | 200 |
+| min_child_weight | 5 | 3 |
+| max_depth | 5 | 5 |
+| learning_rate | 0.05 | 0.1 |
+| colsample_bytree | 0.8 | 0.8 |
+
+
+## Conclusion
+
+Hyperparameter tuning resulted in an average MAE improvement of 5.68% and an average R² improvement of 21.87%.
+
+Before tuning, Gradient_Boosting was the best performing model. After tuning, Random_Forest became the best performing model.
